@@ -1,6 +1,9 @@
 [build]
-  command = "next build && next export"
-  publish = "out"
+  # Next.js 16: use only `next build`. The Netlify Next.js plugin will handle output.
+  command = "next build"
+  # The plugin sets this automatically; keeping for clarity.
+  publish = ".next"
+  # NOTE: Ensure this is your actual Supabase project URL (https://<project>.supabase.co)
   environment = { NEXT_PUBLIC_SUPABASE_URL = "https://kong-development-1841.up.railway.app" }
 
 [[plugins]]
