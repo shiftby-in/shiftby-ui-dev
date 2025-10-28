@@ -26,7 +26,7 @@ function RegisterPageInner() {
   const [lastName, setLastName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [mobile, setMobile] = React.useState('')
-  const [courseId, setCourseId] = React.useState<number | ''>('')
+  const [courseId, setCourseId] = React.useState<string | ''>('')
 
   const [courses, setCourses] = React.useState<Course[]>([])
   const [loadingCourses, setLoadingCourses] = React.useState(true)
@@ -46,7 +46,7 @@ function RegisterPageInner() {
         setCourses(Array.isArray(payload) ? payload : [])
         // Preselect via query param when available
         const q = search?.get('course_id')
-        if (q && !Number.isNaN(Number(q))) setCourseId(Number(q))
+        if (q) setCourseId(q)
       } catch (e) {
         if (!isMounted) return
         setCourses([])
@@ -76,7 +76,7 @@ function RegisterPageInner() {
         last_name: lastName,
         email,
         mobile,
-        course_id: courseId as number,
+        course_id: courseId as string,
       })
       setSnackbarSeverity('success')
       setSnackbarMsg('Registration successful!')
@@ -168,7 +168,7 @@ function RegisterPageInner() {
                       labelId="course-select-label"
                       label="Course"
                       value={courseId}
-                      onChange={(e) => setCourseId(e.target.value as number)}
+                      onChange={(e) => setCourseId(e.target.value as string)}
                       disabled={loadingCourses}
                     >
                       {loadingCourses ? (
@@ -179,7 +179,7 @@ function RegisterPageInner() {
                         </MenuItem>
                       ) : courses.length ? (
                         courses.map((c) => (
-                          <MenuItem key={c.id} value={c.id}>
+                          <MenuItem key={String(c.id)} value={String(c.id)}>
                             {c.title}
                           </MenuItem>
                         ))

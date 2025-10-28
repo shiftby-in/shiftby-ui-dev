@@ -65,7 +65,7 @@ export type RegisterPayload = {
   last_name: string
   email: string
   mobile: string
-  course_id: number
+  course_id: string
 }
 
 export async function registerUser(payload: RegisterPayload): Promise<{ success: true }> {

@@ -6,7 +6,7 @@ type Payload = {
   last_name?: string
   email?: string
   mobile?: string
-  course_id?: number
+  course_id?: string
 }
 
 export async function POST(request: Request) {
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     if (!last_name) missing.push('last_name')
     if (!email) missing.push('email')
     if (!mobile) missing.push('mobile')
-    if (typeof course_id !== 'number') missing.push('course_id')
+    if (!course_id || typeof course_id !== 'string') missing.push('course_id')
 
     if (missing.length) {
       return NextResponse.json(
