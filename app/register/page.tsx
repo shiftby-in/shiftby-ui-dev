@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import { motion, cubicBezier } from 'framer-motion'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
@@ -20,7 +20,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { fetchCourses, registerUser, Course } from '../api/client'
 import { useSearchParams } from 'next/navigation'
 
-export default function RegisterPage() {
+function RegisterPageInner() {
   const search = useSearchParams()
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
@@ -220,5 +220,13 @@ export default function RegisterPage() {
         </Snackbar>
       </motion.div>
     </Container>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<Container maxWidth="sm" sx={{ py: { xs: 3, sm: 6 } }}><Typography variant="h6">Loading…</Typography></Container>}>
+      <RegisterPageInner />
+    </Suspense>
   )
 }

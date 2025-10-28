@@ -3,12 +3,23 @@ import './globals.css'
 import SiteHeader from '../components/SiteHeader'
 import SiteFooter from '../components/SiteFooter'
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shiftby.in'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'Shiftby',
     template: '%s | Shiftby',
   },
   description: 'Shiftby training platform',
+  openGraph: {
+    url: siteUrl,
+    siteName: 'Shiftby',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 export const viewport = {
