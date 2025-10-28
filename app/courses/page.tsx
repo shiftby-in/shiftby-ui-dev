@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, cubicBezier } from 'framer-motion'
 import { fetchCourses, type Course as APICourse } from '../api/client'
 
 type Course = APICourse & { level: 'Beginner' | 'Intermediate' | 'Advanced' | string }
@@ -27,8 +27,15 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 6 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: cubicBezier(0.25, 0.46, 0.45, 0.94) },
+  },
 }
+
+// Motion-enhanced Grid item so AnimatePresence can control exit animations
+const MotionGridItem = motion(Grid as any)
 
 export default function CoursesPage() {
   const [courses, setCourses] = React.useState<Course[]>([])
@@ -107,39 +114,46 @@ export default function CoursesPage() {
           <Grid container spacing={2}>
             <AnimatePresence>
               {filtered.map((course) => (
-                <Grid key={course.id} item xs={12} sm={6}>
-                  <motion.div variants={itemVariants} initial="hidden" animate="show" exit={{ opacity: 0, y: 4 }}>
-                    <Card sx={{ height: '100%' }}>
-                      {course.cover_url ? (
-                        <CardMedia component="img" height="160" image={course.cover_url} alt={course.title} sx={{ objectFit: 'cover' }} />
-                      ) : null}
-                      <CardContent>
-                        <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
-                          <Box sx={{ flex: 1, minWidth: 0 }}>
-                            <Typography variant="h6" component="h2" gutterBottom noWrap>
-                              {course.title}
+                <MotionGridItem
+                  key={course.id}
+                  item
+                  xs={12}
+                  sm={6}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="show"
+                  exit={{ opacity: 0, y: 4 }}
+                >
+                  <Card sx={{ height: '100%' }}>
+                    {course.cover_url ? (
+                      <CardMedia component="img" height="160" image={course.cover_url} alt={course.title} sx={{ objectFit: 'cover' }} />
+                    ) : null}
+                    <CardContent>
+                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                        <Box sx={{ flex: 1, minWidth: 0 }}>
+                          <Typography variant="h6" component="h2" gutterBottom noWrap>
+                            {course.title}
+                          </Typography>
+                          {course.summary ? (
+                            <Typography variant="body2" color="text.secondary" sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                              {course.summary}
                             </Typography>
-                            {course.summary ? (
-                              <Typography variant="body2" color="text.secondary" sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                {course.summary}
-                              </Typography>
-                            ) : null}
-                          </Box>
-                          <Stack alignItems="flex-end" spacing={1}>
-                            <Chip size="small" label={course.level || '-'} />
-                            {typeof course.price_usd === 'number' ? (
-                              <Typography variant="subtitle1" fontWeight={700}>
-                                ${course.price_usd.toFixed(2)}
-                              </Typography>
-                            ) : (
-                              <Typography variant="subtitle2" color="text.secondary">Free</Typography>
-                            )}
-                          </Stack>
+                          ) : null}
+                        </Box>
+                        <Stack alignItems="flex-end" spacing={1}>
+                          <Chip size="small" label={course.level || '-'} />
+                          {typeof course.price_usd === 'number' ? (
+                            <Typography variant="subtitle1" fontWeight={700}>
+                              ${course.price_usd.toFixed(2)}
+                            </Typography>
+                          ) : (
+                            <Typography variant="subtitle2" color="text.secondary">Free</Typography>
+                          )}
                         </Stack>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </Grid>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </MotionGridItem>
               ))}
             </AnimatePresence>
           </Grid>

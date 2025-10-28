@@ -1,6 +1,7 @@
 'use client';
 
-import { alpha, Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import { alpha, Box, Card, CardContent, Stack, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
@@ -35,6 +36,7 @@ const features = [
 ];
 
 const MotionCard = motion(Card);
+const G = Grid as any;
 
 export default function FeatureHighlights() {
   return (
@@ -49,9 +51,9 @@ export default function FeatureHighlights() {
         </Typography>
       </Stack>
 
-      <Grid container spacing={3}>
+      <G container spacing={3}>
         {features.map((feature) => (
-          <Grid key={feature.title} item xs={12} sm={6}>
+          <G key={feature.title} xs={12} sm={6}>
             <MotionCard
               elevation={0}
               whileHover={{ y: -8, boxShadow: '0 24px 45px rgba(25,118,210,0.14)' }}
@@ -78,9 +80,9 @@ export default function FeatureHighlights() {
                 </Stack>
               </CardContent>
             </MotionCard>
-          </Grid>
+          </G>
         ))}
-      </Grid>
+      </G>
     </Box>
   );
 }

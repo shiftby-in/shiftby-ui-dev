@@ -1,6 +1,7 @@
 'use client';
 
-import { alpha, Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import { alpha, Box, Card, CardContent, Stack, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
@@ -26,12 +27,13 @@ const phases = [
 ];
 
 const MotionCard = motion(Card);
+const G = Grid as any;
 
 export default function LearningExperience() {
   return (
     <Box component="section" aria-labelledby="learning-experience-title" sx={{ mt: { xs: 6, md: 9 } }}>
-      <Grid container spacing={4} alignItems="center">
-        <Grid item xs={12} md={5}>
+      <G container spacing={4} alignItems="center">
+        <G xs={12} md={5}>
           <Stack spacing={2.5}>
             <Typography id="learning-experience-title" variant="h4" fontWeight={800}>
               A high-touch learning experience built around your life
@@ -55,11 +57,11 @@ export default function LearningExperience() {
               </Stack>
             </Stack>
           </Stack>
-        </Grid>
-        <Grid item xs={12} md={7}>
-          <Grid container spacing={3}>
+        </G>
+        <G xs={12} md={7}>
+          <G container spacing={3}>
             {phases.map((phase, index) => (
-              <Grid key={phase.title} item xs={12} sm={6}>
+              <G key={phase.title} xs={12} sm={6}>
                 <MotionCard
                   elevation={0}
                   initial={{ opacity: 0, y: 16 }}
@@ -87,11 +89,11 @@ export default function LearningExperience() {
                     </Typography>
                   </CardContent>
                 </MotionCard>
-              </Grid>
+              </G>
             ))}
-          </Grid>
-        </Grid>
-      </Grid>
+          </G>
+        </G>
+      </G>
     </Box>
   );
 }

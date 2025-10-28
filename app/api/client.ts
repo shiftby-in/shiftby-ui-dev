@@ -12,7 +12,12 @@ export type Course = {
 
 // Server-side: query via service client (no proxy)
 export async function fetchCoursesServer(): Promise<Course[]> {
-  const { supabaseAdmin } = await import('../../src/lib/supabase-server')
+  const { getSupabaseAdmin } = await import('../../src/lib/supabase-server')
+  const supabaseAdmin = getSupabaseAdmin()
+  if (!supabaseAdmin) {
+    console.error('Supabase admin not configured; returning empty courses list.')
+    return []
+  }
   const baseSelect = 'id,title,summary,level,price_usd,cover_url'
   const { data, error } = await supabaseAdmin
     .from('courses')

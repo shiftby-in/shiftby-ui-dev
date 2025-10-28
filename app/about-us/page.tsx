@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, easeOut } from 'framer-motion'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
@@ -21,7 +21,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: easeOut } },
 }
 
 export default function AboutUsPage() {
@@ -79,7 +79,7 @@ export default function AboutUsPage() {
                   body: 'We foster an encouraging environment where questions and growth are welcomed.',
                 },
               ].map((v) => (
-                <Grid key={v.title} item xs={12} sm={4}>
+                <Grid key={v.title} size={{ xs: 12, sm: 4 }}>
                   <Paper elevation={1} sx={{ p: { xs: 2, sm: 2.5 }, height: '100%', borderRadius: 2 }}>
                     <Typography variant="h6" component="h3" fontWeight={700} gutterBottom>
                       {v.title}

@@ -1,6 +1,7 @@
 'use client';
 
-import { alpha, Box, Card, CardActionArea, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
+import { alpha, Box, Card, CardActionArea, CardContent, Chip, Stack, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import AutoStoriesRoundedIcon from '@mui/icons-material/AutoStoriesRounded';
 import Link from 'next/link';
@@ -19,6 +20,7 @@ type Props = {
 };
 
 const MotionCard = motion(Card);
+const G = Grid as any;
 
 export default function CourseShowcase({ courses }: Props) {
   return (
@@ -41,28 +43,30 @@ export default function CourseShowcase({ courses }: Props) {
       </Stack>
 
       {courses.length > 0 ? (
-        <Grid container spacing={3}>
+        <G container spacing={3}>
           {courses.map((course) => (
-            <Grid key={course.id} item xs={12} md={4}>
-              <MotionCard
-                elevation={0}
-                component={Link}
+            <G key={course.id} xs={12} md={4}>
+              <Link
                 href={course.slug ? `/courses/${course.slug}` : `/courses/${course.id}`}
-                whileHover={{ y: -8 }}
-                transition={{ duration: 0.35 }}
-                sx={{
-                  display: 'block',
-                  textDecoration: 'none',
-                  borderRadius: 3,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  background: (theme) => alpha(theme.palette.background.paper, 0.96),
-                  overflow: 'hidden',
-                  height: '100%',
-                }}
+                style={{ textDecoration: 'none' }}
               >
-                <CardActionArea sx={{ height: '100%' }}>
-                  <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, alignItems: 'flex-start' }}>
+                <MotionCard
+                  elevation={0}
+                  whileHover={{ y: -8 }}
+                  transition={{ duration: 0.35 }}
+                  sx={{
+                    display: 'block',
+                    textDecoration: 'none',
+                    borderRadius: 3,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    background: (theme) => alpha(theme.palette.background.paper, 0.96),
+                    overflow: 'hidden',
+                    height: '100%',
+                  }}
+                >
+                  <CardActionArea sx={{ height: '100%' }}>
+                    <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, alignItems: 'flex-start' }}>
                     <Box
                       sx={{
                         width: '100%',
@@ -94,9 +98,10 @@ export default function CourseShowcase({ courses }: Props) {
                   </CardContent>
                 </CardActionArea>
               </MotionCard>
-            </Grid>
+              </Link>
+            </G>
           ))}
-        </Grid>
+        </G>
       ) : (
         <Typography variant="body2" color="text.secondary">
           Cohorts are launching soon. Join the waitlist to be the first to know.

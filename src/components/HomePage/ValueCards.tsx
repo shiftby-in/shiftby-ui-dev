@@ -1,6 +1,7 @@
 'use client';
 
-import { alpha, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import { alpha, Card, CardContent, Stack, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import LeaderboardRoundedIcon from '@mui/icons-material/LeaderboardRounded';
 import Diversity3RoundedIcon from '@mui/icons-material/Diversity3Rounded';
 import WorkspacePremiumRoundedIcon from '@mui/icons-material/WorkspacePremiumRounded';
@@ -8,6 +9,7 @@ import RocketLaunchRoundedIcon from '@mui/icons-material/RocketLaunchRounded';
 import { motion } from 'framer-motion';
 
 const MotionCard = motion(Card);
+const G = Grid as any;
 
 const stats = [
   {
@@ -38,9 +40,9 @@ const stats = [
 
 export default function ValueCards() {
   return (
-    <Grid container spacing={2.5} component="section" aria-label="Shiftby impact stats">
+    <G container spacing={2.5} component="section" aria-label="Shiftby impact stats">
       {stats.map((stat) => (
-        <Grid key={stat.label} item xs={12} sm={6} md={3}>
+        <G key={stat.label} xs={12} sm={6} md={3}>
           <MotionCard
             elevation={0}
             whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(25,118,210,0.12)' }}
@@ -72,8 +74,8 @@ export default function ValueCards() {
               </Typography>
             </CardContent>
           </MotionCard>
-        </Grid>
+        </G>
       ))}
-    </Grid>
+    </G>
   );
 }

@@ -106,7 +106,7 @@ export default function RegisterPage() {
 
         <Box component="form" onSubmit={onSubmit} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 required
@@ -117,7 +117,7 @@ export default function RegisterPage() {
                 autoComplete="given-name"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 required
@@ -128,7 +128,7 @@ export default function RegisterPage() {
                 autoComplete="family-name"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 required
@@ -140,7 +140,7 @@ export default function RegisterPage() {
                 autoComplete="email"
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 required
@@ -152,7 +152,7 @@ export default function RegisterPage() {
                 inputProps={{ inputMode: 'tel' }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControl fullWidth required>
                 <InputLabel id="course-select-label">Course</InputLabel>
                 <Select
@@ -182,7 +182,7 @@ export default function RegisterPage() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Button
                 type="submit"
                 variant="contained"
