@@ -1,13 +1,15 @@
 'use client'
 
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, cubicBezier } from 'framer-motion'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
@@ -16,8 +18,10 @@ import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import { fetchCourses, registerUser, Course } from '../api/client'
+import { useSearchParams } from 'next/navigation'
 
 export default function RegisterPage() {
+  const search = useSearchParams()
   const [firstName, setFirstName] = React.useState('')
   const [lastName, setLastName] = React.useState('')
   const [email, setEmail] = React.useState('')
@@ -40,6 +44,9 @@ export default function RegisterPage() {
         const payload = await fetchCourses()
         if (!isMounted) return
         setCourses(Array.isArray(payload) ? payload : [])
+        // Preselect via query param when available
+        const q = search?.get('course_id')
+        if (q && !Number.isNaN(Number(q))) setCourseId(Number(q))
       } catch (e) {
         if (!isMounted) return
         setCourses([])
@@ -89,62 +96,64 @@ export default function RegisterPage() {
   }
 
   return (
-    <Container maxWidth="sm" sx={{ py: { xs: 2, sm: 4 } }}>
+    <Container maxWidth="md" sx={{ py: { xs: 3, sm: 6 } }}>
       <motion.div
-        initial={{ x: 24, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
+        initial={{ y: 18, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.45, ease: cubicBezier(0.2, 0.8, 0.2, 1) }}
       >
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="h4" component="h1" fontWeight={700} gutterBottom>
-            Register for Courses
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Typography variant="h3" component="h1" fontWeight={900} gutterBottom>
+            Join a Shiftby Cohort
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Fill in your details and choose a course to get started.
+            Tell us a bit about you and pick a cohort to get started.
           </Typography>
         </Box>
 
-        <Box component="form" onSubmit={onSubmit} noValidate>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                fullWidth
-                required
-                label="First name"
+        <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider', backdropFilter: 'blur(10px)' }}>
+          <CardContent>
+            <Box component="form" onSubmit={onSubmit} noValidate>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    fullWidth
+                    required
+                    label="First name"
                 name="first_name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 autoComplete="given-name"
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                fullWidth
-                required
-                label="Last name"
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    fullWidth
+                    required
+                    label="Last name"
                 name="last_name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 autoComplete="family-name"
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                fullWidth
-                required
-                type="email"
-                label="Email"
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    fullWidth
+                    required
+                    type="email"
+                    label="Email"
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                fullWidth
-                required
-                label="Mobile"
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    fullWidth
+                    required
+                    label="Mobile"
                 name="mobile"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
@@ -152,50 +161,52 @@ export default function RegisterPage() {
                 inputProps={{ inputMode: 'tel' }}
               />
             </Grid>
-            <Grid size={{ xs: 12 }}>
-              <FormControl fullWidth required>
-                <InputLabel id="course-select-label">Course</InputLabel>
-                <Select
-                  labelId="course-select-label"
-                  label="Course"
-                  value={courseId}
-                  onChange={(e) => setCourseId(e.target.value as number)}
-                  disabled={loadingCourses}
-                >
-                  {loadingCourses ? (
-                    <MenuItem value="" disabled>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <CircularProgress size={16} /> Loading courses…
-                      </Box>
-                    </MenuItem>
-                  ) : courses.length ? (
-                    courses.map((c) => (
-                      <MenuItem key={c.id} value={c.id}>
-                        {c.title}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem value="" disabled>
-                      No courses available
-                    </MenuItem>
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                size="large"
-                disabled={submitting}
-              >
-                {submitting ? 'Submitting…' : 'Register'}
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth required>
+                    <InputLabel id="course-select-label">Course</InputLabel>
+                    <Select
+                      labelId="course-select-label"
+                      label="Course"
+                      value={courseId}
+                      onChange={(e) => setCourseId(e.target.value as number)}
+                      disabled={loadingCourses}
+                    >
+                      {loadingCourses ? (
+                        <MenuItem value="" disabled>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CircularProgress size={16} /> Loading courses…
+                          </Box>
+                        </MenuItem>
+                      ) : courses.length ? (
+                        courses.map((c) => (
+                          <MenuItem key={c.id} value={c.id}>
+                            {c.title}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem value="" disabled>
+                          No courses available
+                        </MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    size="large"
+                    disabled={submitting}
+                  >
+                    {submitting ? 'Submitting…' : 'Register'}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </CardContent>
+        </Card>
 
         <Snackbar
           open={snackbarOpen}

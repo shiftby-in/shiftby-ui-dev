@@ -97,7 +97,7 @@ export default function AboutUsPage() {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 component={Link}
-                href="/catalog"
+                href="/courses"
                 variant="contained"
                 color="primary"
                 size="large"
