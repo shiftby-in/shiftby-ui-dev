@@ -1,4 +1,4 @@
-import { Container, Grid, Card, CardContent, Typography, Box } from "@mui/material";
+import { Container, Card, CardContent, Typography, Box } from "@mui/material";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { fetchCourses } from "./api/client";
@@ -56,9 +56,15 @@ export default async function Home() {
         </Typography>
 
         {courses.length > 0 ? (
-          <Grid container spacing={2}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
+              gap: 2,
+            }}
+          >
             {courses.map((c) => (
-              <Grid key={c.id}  size={{ xs: 12, sm: 6, md: 4 }}>
+              <Box key={c.id}>
                 <Link
                   href={c.slug ? `/courses/${c.slug}` : `/courses/${c.id}`}
                   style={{ textDecoration: "none", display: "block" }}
@@ -81,9 +87,9 @@ export default async function Home() {
                     </CardContent>
                   </Card>
                 </Link>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         ) : (
           <Typography variant="body2" color="text.secondary">
             Courses coming soon. Explore all courses.
