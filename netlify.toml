@@ -1,0 +1,7 @@
+[build]
+  command = "next build && next export"
+  publish = "out"
+  environment = { NEXT_PUBLIC_SUPABASE_URL = "https://kong-development-1841.up.railway.app" }
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

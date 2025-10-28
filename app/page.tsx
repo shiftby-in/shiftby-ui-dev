@@ -58,7 +58,7 @@ export default async function Home() {
         {courses.length > 0 ? (
           <Grid container spacing={2}>
             {courses.map((c) => (
-              <Grid key={c.id} item xs={12} sm={6} md={4}>
+              <Grid key={c.id}  size={{ xs: 12, sm: 6, md: 4 }}>
                 <Link
                   href={c.slug ? `/courses/${c.slug}` : `/courses/${c.id}`}
                   style={{ textDecoration: "none", display: "block" }}
