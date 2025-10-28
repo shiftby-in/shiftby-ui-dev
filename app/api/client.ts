@@ -10,19 +10,23 @@ export type Course = {
   cover_url?: string | null
 }
 
-export async function fetchCourses(): Promise<Course[]> {
+// Server-side: query via service client (no proxy)
+export async function fetchCoursesServer(): Promise<Course[]> {
+  const { supabaseAdmin } = await import('../../src/lib/supabase-server')
   const baseSelect = 'id,title,summary,level,price_usd,cover_url'
-  console.log('Fetching courses from Supabase API...')
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('courses')
     .select(baseSelect)
     .eq('published', true)
     .order('id', { ascending: true })
-  console.log('Supabase fetchCourses response:', { data, error })
   if (error) {
+    const code = (error as any)?.code || ''
     const msg = (error as any)?.message?.toLowerCase?.() || ''
+    if (code === '42P01' || (msg.includes('relation') && msg.includes('does not exist'))) {
+      return []
+    }
     if (msg.includes('column') && msg.includes('published')) {
-      const { data: data2, error: error2 } = await supabase
+      const { data: data2, error: error2 } = await supabaseAdmin
         .from('courses')
         .select(baseSelect)
         .order('id', { ascending: true })
@@ -34,6 +38,23 @@ export async function fetchCourses(): Promise<Course[]> {
   return data ?? []
 }
 
+// Client-side: call our Next.js API which uses the service client
+export async function fetchCoursesClient(): Promise<Course[]> {
+  const res = await fetch(`/api/courses`, { cache: 'no-store' } as RequestInit)
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({} as any))
+    throw new Error(body?.message || `Courses API failed: ${res.status}`)
+  }
+  const data = (await res.json()) as Course[]
+  return Array.isArray(data) ? data : []
+}
+
+// Convenience: pick server vs client automatically
+export async function fetchCourses(): Promise<Course[]> {
+  const isServer = typeof window === 'undefined'
+  return isServer ? fetchCoursesServer() : fetchCoursesClient()
+}
+
 export type RegisterPayload = {
   first_name: string
   last_name: string
@@ -43,9 +64,14 @@ export type RegisterPayload = {
 }
 
 export async function registerUser(payload: RegisterPayload): Promise<{ success: true }> {
-  const { error } = await supabase.from('registrations').insert([payload])
-  if (error) {
-    throw new Error(error.message || 'Registration failed')
+  const res = await fetch(`/api/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  } as RequestInit)
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({} as any))
+    throw new Error(body?.message || 'Registration failed')
   }
   return { success: true }
 }

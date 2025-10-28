@@ -18,7 +18,6 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/og-image.png" }],
   },
-  themeColor: "#1976d2",
 };
 
 type Course = {

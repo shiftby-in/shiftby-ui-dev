@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { supabaseAdmin } from '../../../src/lib/supabase-server'
 
 type Payload = {
   first_name?: string
@@ -33,17 +33,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
-    // Prefer service role key for inserts; fall back to anon key if policies allow
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-    if (!supabaseUrl || !supabaseKey) {
-      return NextResponse.json({ message: 'Supabase not configured' }, { status: 500 })
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseKey, {
-      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-    })
+    const supabase = supabaseAdmin
 
     const { error } = await supabase.from('registrations').insert([
       { first_name, last_name, email, mobile, course_id },
@@ -64,4 +54,3 @@ export async function POST(request: Request) {
     )
   }
 }
-

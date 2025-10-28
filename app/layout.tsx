@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   description: 'Shiftby training platform',
 }
 
+export const viewport = {
+  themeColor: '#1976d2',
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -22,4 +26,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-

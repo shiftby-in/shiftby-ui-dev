@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { supabaseAdmin } from '../../../src/lib/supabase-server'
 import { createClient } from '@supabase/supabase-js'
 
 export type APICourse = {
@@ -11,19 +12,7 @@ export type APICourse = {
 }
 
 export async function getPublishedCourses(): Promise<APICourse[]> {
-  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnon =
-    process.env.SUPABASE_ANON_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    ''
-
-  if (!supabaseUrl || !supabaseAnon) {
-    throw new Error('Supabase URL or anon key missing')
-  }
-
-  const supabase = createClient(supabaseUrl, supabaseAnon, {
-    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-  })
+  const supabase = supabaseAdmin
 
   // Try with published=true, then gracefully fall back if column is missing
   const baseSelect = 'id,title,summary,level,price_usd,cover_url'
@@ -34,7 +23,28 @@ export async function getPublishedCourses(): Promise<APICourse[]> {
     .order('id', { ascending: true })
 
   if (error) {
+    // Return empty if table is missing to avoid hard-failing the page
+    const code = (error as any)?.code || ''
     const msg = (error as any)?.message?.toLowerCase?.() || ''
+    if (code === '42P01' || (msg.includes('relation') && msg.includes('does not exist'))) {
+      console.warn('courses table missing; returning empty list')
+      return []
+    }
+    // Retry with anon key if service key auth fails (proxy/JWT issues)
+    const looksAuth = code === 'PGRST301' || msg.includes('invalid authentication') || msg.includes('no suitable key')
+    if (looksAuth) {
+      const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+      const anon = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+      if (supabaseUrl && anon) {
+        const supabaseAnon = createClient(supabaseUrl, anon, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
+        const retry = await supabaseAnon
+          .from('courses')
+          .select(baseSelect)
+          .eq('published', true)
+          .order('id', { ascending: true })
+        if (!retry.error) return retry.data ?? []
+      }
+    }
     if (msg.includes('column') && msg.includes('published')) {
       const { data: data2, error: error2 } = await supabase
         .from('courses')
@@ -53,9 +63,13 @@ export async function GET() {
     const data = await getPublishedCourses()
     return NextResponse.json(data)
   } catch (err: any) {
-    return NextResponse.json(
-      { message: err?.message || 'Failed to load courses' },
-      { status: 500 }
-    )
+    const code = err?.code || ''
+    const msg = String(err?.message || '')
+    const isAuth = code === 'PGRST301' || msg.toLowerCase().includes('invalid authentication')
+    const status = isAuth ? 502 : 500
+    const message = isAuth
+      ? 'Upstream auth failed: verify JWT secret and headers through proxy'
+      : (msg || 'Failed to load courses')
+    return NextResponse.json({ message }, { status })
   }
 }
