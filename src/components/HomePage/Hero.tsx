@@ -39,7 +39,7 @@ export default function Hero() {
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
           <Stack direction="row" spacing={1.5} sx={{ pt: 1 }}>
             <Button
-              href="/catalog"
+              href="/courses"
               component={Link}
               variant="contained"
               color="primary"

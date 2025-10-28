@@ -91,7 +91,7 @@ export default async function Home() {
         )}
 
         <Box sx={{ mt: 2 }}>
-          <Link href="/catalog" style={{ textDecoration: "none" }}>
+          <Link href="/courses" style={{ textDecoration: "none" }}>
             <Typography color="primary" sx={{ fontWeight: 600 }}>
               Explore all courses ?
             </Typography>

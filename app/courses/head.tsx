@@ -1,7 +1,7 @@
 export default function Head() {
   const title = 'Course Catalog | Shiftby'
   const description = 'Browse published courses by level and find the right learning path with Shiftby.'
-  const url = '/catalog'
+  const url = '/courses'
   return (
     <>
       <title>{title}</title>
