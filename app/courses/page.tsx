@@ -4,6 +4,7 @@ import React from 'react'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
@@ -13,6 +14,7 @@ import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
 import { motion, AnimatePresence, cubicBezier } from 'framer-motion'
+import Link from 'next/link'
 import { fetchCourses, type Course as APICourse } from '../api/client'
 
 type Course = APICourse & { level: 'Beginner' | 'Intermediate' | 'Advanced' | string }
@@ -124,7 +126,8 @@ export default function CoursesPage() {
                   animate="show"
                   exit={{ opacity: 0, y: 4 }}
                 >
-                  <Card sx={{ height: '100%' }}>
+                  <Card sx={{ height: '100%', borderRadius: 3, border: '1px solid', borderColor: 'divider', overflow: 'hidden', transition: 'transform .3s ease, box-shadow .3s ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 } }}>
+                    <CardActionArea sx={{ height: '100%' }} component={Link as any} href={`/register?course_id=${course.id}`}>
                     {course.cover_url ? (
                       <CardMedia component="img" height="160" image={course.cover_url} alt={course.title} sx={{ objectFit: 'cover' }} />
                     ) : null}
@@ -152,6 +155,7 @@ export default function CoursesPage() {
                         </Stack>
                       </Stack>
                     </CardContent>
+                    </CardActionArea>
                   </Card>
                 </MotionGridItem>
               ))}
