@@ -61,17 +61,16 @@ export default function Hero() {
             fontSize: { xs: '2.4rem', sm: '3rem', md: '3.5rem' },
           }}
         >
-          Level up faster with immersive, mentor-guided tech courses
+          Learn Smarter. Build Faster.
         </Typography>
 
         <Typography component="p" variant="h6" color="text.secondary" sx={{ maxWidth: 540 }}>
-          Build a portfolio of real projects, unlock interviews with hiring partners, and join a community of
-          practitioners invested in your success.
+          AI-powered courses for modern developers.
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ xs: 'stretch', sm: 'center' }}>
           <Button
-            href="/courses"
+            href="/catalog"
             component={Link}
             variant="contained"
             color="primary"
@@ -79,7 +78,7 @@ export default function Hero() {
             aria-label="Browse courses"
             sx={{ py: 1.5, px: 4, fontWeight: 700 }}
           >
-            Explore courses
+            Explore Courses
           </Button>
           <Button
             href="/register"
@@ -87,10 +86,10 @@ export default function Hero() {
             variant="outlined"
             color="inherit"
             size="large"
-            aria-label="Join the next cohort"
+            aria-label="Join now"
             sx={{ py: 1.5, px: 4, fontWeight: 700, borderColor: alpha('#fff', 0.3) }}
           >
-            Join the next cohort
+            Join Now
           </Button>
         </Stack>
 

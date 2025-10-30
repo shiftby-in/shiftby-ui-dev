@@ -4,20 +4,28 @@ import type { Metadata } from "next";
 import { fetchCourses } from "./api/client";
 
 import Hero from "../src/components/HomePage/Hero";
-import ValueCards from "../src/components/HomePage/ValueCards";
+import QuickStats from "../src/components/HomePage/QuickStats";
 import TestimonialCarousel from "../src/components/HomePage/TestimonialCarousel";
 import CTABanner from "../src/components/HomePage/CTABanner";
 
 export const metadata: Metadata = {
-  title: "Shiftby - Learn faster, get hired",
-  description: "Mentor-led, project-based courses to accelerate your career.",
+  title: "Learn Smarter. Build Faster. | Shiftby",
+  description: "AI-powered courses for modern developers.",
   openGraph: {
-    title: "Shiftby - Learn faster, get hired",
-    description: "Mentor-led, project-based courses to accelerate your career.",
-    url: "https://shiftby.in",
+    title: "Learn Smarter. Build Faster. | Shiftby",
+    description: "AI-powered courses for modern developers.",
+    url: "https://shiftby.in/",
     type: "website",
     images: [{ url: "/og-image.png" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Learn Smarter. Build Faster. | Shiftby",
+    description: "AI-powered courses for modern developers.",
+    images: ["/og-image.png"],
+  },
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
 };
 
 type Course = {
@@ -47,7 +55,7 @@ export default async function Home() {
       <Hero />
 
       <Box sx={{ mt: 3 }}>
-        <ValueCards />
+        <QuickStats />
       </Box>
 
       <Box component="section" aria-labelledby="featured-courses-title" sx={{ mt: 5 }}>
