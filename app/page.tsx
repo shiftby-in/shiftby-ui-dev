@@ -38,7 +38,6 @@ type Course = {
 
 async function getTopCourses(): Promise<Course[]> {
   try {
-    console.log('Fetching top courses...');
     const all = await fetchCourses();
     return Array.isArray(all) ? (all as Course[]).slice(0, 3) : [];
   } catch (e: any) {
