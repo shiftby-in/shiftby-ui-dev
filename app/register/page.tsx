@@ -42,7 +42,6 @@ function RegisterPageInner() {
       setLoadingCourses(true)
       try {
         const payload = await fetchCourses()
-        console.log('Fetched courses:', payload)
         if (!isMounted) return
         setCourses(Array.isArray(payload) ? payload : [])
         // Preselect via query param when available
