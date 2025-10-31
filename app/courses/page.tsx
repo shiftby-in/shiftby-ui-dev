@@ -52,6 +52,7 @@ export default function CoursesPage() {
       setError(null)
       try {
         const payload = await fetchCourses()
+        console.log('Fetched courses:', payload)
         if (!isMounted) return
         setCourses((payload || []) as Course[])
       } catch (e: any) {
