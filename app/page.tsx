@@ -7,6 +7,7 @@ import Hero from "../src/components/HomePage/Hero";
 import QuickStats from "../src/components/HomePage/QuickStats";
 import TestimonialCarousel from "../src/components/HomePage/TestimonialCarousel";
 import CTABanner from "../src/components/HomePage/CTABanner";
+import { ChevronsLeftIcon } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Learn Smarter. Build Faster. | Shiftby",
@@ -39,6 +40,7 @@ type Course = {
 async function getTopCourses(): Promise<Course[]> {
   try {
     const all = await fetchCourses();
+    console.log("Fetched courses for home page:", all);
     return Array.isArray(all) ? (all as Course[]).slice(0, 3) : [];
   } catch (e: any) {
     console.error("Courses API error:", e?.message || e);
