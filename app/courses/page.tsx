@@ -51,7 +51,6 @@ export default function CoursesPage() {
       setLoading(true)
       setError(null)
       try {
-        console.log('Fetching courses from Supabase course page...')
         const payload = await fetchCourses()
         if (!isMounted) return
         setCourses((payload || []) as Course[])
