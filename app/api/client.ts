@@ -24,6 +24,7 @@ export async function fetchCoursesServer(): Promise<Course[]> {
     .select(baseSelect)
     .eq('published', true)
     .order('id', { ascending: true })
+  console.log("Fetched courses from Supabase from API:", data);
   if (error) {
     const code = (error as any)?.code || ''
     const msg = (error as any)?.message?.toLowerCase?.() || ''

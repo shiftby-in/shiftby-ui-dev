@@ -21,7 +21,7 @@ export async function getPublishedCourses(): Promise<APICourse[]> {
     .select(baseSelect)
     .eq('published', true)
     .order('id', { ascending: true })
-
+  console.log("Fetched courses from Supabase from API2:", data);
   if (error) {
     // Return empty if table is missing to avoid hard-failing the page
     const code = (error as any)?.code || ''
