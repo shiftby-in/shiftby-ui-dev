@@ -1,0 +1,30 @@
+# ================================================================
+#  Shiftby-UI — CodeQL Configuration
+#  Purpose : Restrict CodeQL scanning to JS/TS application source
+#  Context : Referenced by the CodeQL workflow
+#  Version : v1.1 (Updated location & globs)
+# ================================================================
+
+disable-default-queries: false
+
+queries:
+  - uses: security-and-quality
+
+paths:
+  - app/**
+  - src/**
+  - components/**
+  - theme/**
+
+paths-ignore:
+  - '**/node_modules/**'
+  - '**/.next/**'
+  - '**/build/**'
+  - '**/dist/**'
+  - '**/out/**'
+  - '**/coverage/**'
+  - '**/public/**'
+  - '**/.vercel/**'
+  - '**/.vscode/**'
+  - '**/tests/**'
+  - '**/__tests__/**'

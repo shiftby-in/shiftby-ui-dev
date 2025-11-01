@@ -27,7 +27,7 @@ export async function getPublishedCourses(): Promise<APICourse[]> {
     const code = (error as any)?.code || ''
     const msg = (error as any)?.message?.toLowerCase?.() || ''
     if (code === '42P01' || (msg.includes('relation') && msg.includes('does not exist'))) {
-      console.warn('courses table missing; returning empty list')
+      console.warn('courses table missing23; returning empty list')
       return []
     }
     // Retry with anon key if service key auth fails (proxy/JWT issues)
