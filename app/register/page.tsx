@@ -59,7 +59,7 @@ function RegisterPageInner() {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [search])
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
