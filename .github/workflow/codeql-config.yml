@@ -1,0 +1,22 @@
+# Shiftby-UI CodeQL Configuration
+# Restricts scanning to JavaScript & TypeScript, ignores non-source directories.
+
+name: "Shiftby-UI CodeQL Configuration"
+
+disable-default-queries: false
+
+queries:
+  - uses: security-and-quality  # Standard GitHub query pack
+
+paths:
+  - src                         # Scan main application source
+
+paths-ignore:
+  - node_modules
+  - .next
+  - build
+  - dist
+  - out
+  - coverage
+  - public
+  - .vercel
